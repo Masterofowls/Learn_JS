@@ -45,3 +45,32 @@ console.log(typeof(Number(boolVal)));
 console.log(typeof(Boolean(emptyStr)));
 console.log(typeof(String(0)));
 console.log(typeof(String(255)));
+
+/* 6 */
+
+let length = '42px'
+
+var numberlength = parseFloat(length);
+let logic = Boolean(numberlength)
+
+console.log(numberlength)
+console.log(logic)
+console.log(numberlength + 10)
+console.log(numberlength *2)
+
+/* 7 */
+
+let age = 25;
+
+if (age < 18){
+    return console.log("Доступ запрещён")
+}
+
+else if (18 < age & age < 60){
+    return console.log("Доступ разрешён")
+}
+
+else if (age > 60){
+    return console.log("Скидка")
+}
+
