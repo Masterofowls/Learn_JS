@@ -26,7 +26,39 @@ function getEvenNumbers(arr) {
 }
 console.log(getEvenNumbers([1, 2, 3, 4, 5, 6]));
 
-/* 
-1. functions 
-2. circuit
-*/
+
+// Задача 5
+
+function checkAge(age) {
+  if (age < 18){
+    return 'Not allowed'
+  } else {
+    return 'Welcome'
+  }
+}
+checkAge(15);
+
+// 6
+
+let str = 'JavaScript';
+console.log(str.length); // 10
+console.log(str[0]); // J
+console.log(str.toUpperCase()) // JAVASCRIPT
+
+// 7 
+
+let i = 10;
+while (i > 0) {
+  console.log(i);
+  i--;
+}
+
+// 8
+
+let x = 5;
+let y = 10;
+
+[x, y] = [y, x];
+
+console.log(x); 
+console.log(y); 
