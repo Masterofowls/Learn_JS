@@ -29,7 +29,7 @@ console.log(typeof c === 'boolean');
 
 console.log('5' + 3); // -> 53
 console.log('5' - 3); // -> 2
-console.log(true + 1); // -> true
+console.log(true + 1); // -> 2
 console.log(false + '1'); // -> false1
 console.log('10' / '2'); // -> 5
 console.log('2' * '3'); // -> 6
@@ -50,7 +50,7 @@ console.log(typeof(String(255)));
 
 let length = '42px'
 
-var numberlength = parseFloat(length);
+var numberlength = Number(length);
 let logic = Boolean(numberlength)
 
 console.log(numberlength)
@@ -63,14 +63,11 @@ console.log(numberlength *2)
 let age = 25;
 
 if (age < 18){
-    return console.log("Доступ запрещён")
+    console.log("Доступ запрещён")
 }
-
 else if (18 < age & age < 60){
-    return console.log("Доступ разрешён")
+    console.log("Доступ разрешён")
 }
-
-else if (age > 60){
-    return console.log("Скидка")
+else {
+    console.log("Скидка")
 }
-
