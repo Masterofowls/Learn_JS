@@ -20,8 +20,8 @@ function getPersonWord(count) {
 }
 
 const result = Object.entries(
-    people.reduce((acc, element) => {
-        acc[element.age] = (acc[element.age] || 0) + 1;
+    people.reduce((acc, taskent) => {
+        acc[taskent.age] = (acc[taskent.age] || 0) + 1;
         return acc;
     }, {})
 )
@@ -91,85 +91,122 @@ const workers = [
     }
   ]
 
-  const result3 = workers.reduce((acc, worker) => {
-    const tasksWithPerformer = worker.tasks.map(task => ({
-      ...task,
-      performer: {
-        name: worker.name,
-        position: worker.position
-      }
-    }));
-    return acc.concat(tasksWithPerformer);
-  }, []);
-  
-  console.log(result3);
+  const result3 = workers.reduce((acc,employee)=>{
+    return [...acc, ...employee.tasks.map((task)=>{
+      return {...task, performer: {
+        name: employee.name,
+        position: employee.position
+      }}
+    })]
+  }, [])
+  console.log(result3)
 
 // 5.2
 
-const allTasks = result3; 
-const total = allTasks.length;
-const doneCount = allTasks.filter(task => task.status === 'done').length;
-const percentage = Math.round((doneCount / total) * 100) + '%';
+const result4 = Math.round(workers
+  .reduce((acc,employee)=>{
+    return [...acc, ...employee.tasks.map((task)=>{
+      return {...task, performer: {
+        name: employee.name,
+        position: employee.position
+      }}
+    })]
+  }, [])
+  .reduce((acc, task)=>{
+    if (task.status === 'done'){
+      return acc+1
+    } 
+    return acc
+  }, 0) / result3.length * 100, 2)
 
-console.log(percentage); 
+console.log(result4)
 
+// 5.3
 
-// 5.3 
-const totalHours = allTasks.reduce((sum, task) => sum + task.hours, 0);
-const averageHours = totalHours / allTasks.length;
-const averageRounded = Math.round(averageHours * 100) / 100;
+const result5 = result3
+  .reduce((acc,task, i)=>{
+    return acc + task.hours
+  }, 0) / result3.length
+  console.log(result5)
 
-console.log(averageRounded); 
+  // 5.4 — Количество задач на каждого сотрудника
 
-//5.4
+  // Нужно получить:
+  // { Анна: 3, Борис: 2, Вика: 4, Глеб: 2 }
 
-const tasksPerEmployee = result3.reduce((acc, task) => {
-  const name = task.performer.name;
-  
-  if (acc[name]) {
-    acc[name] += 1;
-  } else {
-    acc[name] = 1;
-  }
-  
-  return acc;
-}, {});
+const result6 = workers
+  .reduce((acc, employee)=>{
+    return {
+      ...acc,
+      [employee.name] : employee.tasks.length
+    } 
+  },{})
+console.log(result6)
 
-console.log(tasksPerEmployee); 
+// 5.5 — Самый эффективный сотрудник
 
-// 5.5 
+// Нужно получить: { name: 'Борис', avgHours: 1.5 } (сотрудник с наименьшим средним временем на задачу, учитывая все задачи, включая pending)
 
-// Шаг 1: Собираем статистику по каждому сотруднику
-const workerStats = result3.reduce((acc, task) => {
-  const name = task.performer.name;
-  const hours = task.hours;
-  
-  if (!acc[name]) {
-    acc[name] = { totalHours: 0, taskCount: 0 };
-  }
-  
-  acc[name].totalHours += hours;
-  acc[name].taskCount += 1;
-  
-  return acc;
-}, {});
+const result7 = workers
+  .map((elem)=>{
+    return {
+      name: elem.name,
+      avgHours: elem.tasks.reduce((acc,task)=> acc+task.hours,0)/elem.tasks.length
+    }
+  })
+  .sort((a,b)=>{
+    return a.avgHours - b.avgHours
+  })[0]
+console.log(result7)
+// 5.6 — Статистика по должностям
 
-console.log(workerStats);
+// Нужно получить:
 
-let minAvg = Infinity;
-let mostEfficient = null;
+// {
+//   Разработчик: {
+//     employees: ['Анна', 'Вика'],
+//     totalTasks: 7,
+//     doneTasks: 4,
+//     pendingTasks: 3,
+//     totalHours: 20,
+//     avgHours: 2.86,
+//     efficiency: '57.14%'
+//   },
+//   Тестировщик: {
+//     employees: ['Борис'],
+//     totalTasks: 2,
+//     doneTasks: 2,
+//     pendingTasks: 0,
+//     totalHours: 3,
+//     avgHours: 1.5,
+//     efficiency: '100%'
+//   },
+//   Дизайнер: {
+//     employees: ['Глеб'],
+//     totalTasks: 2,
+//     doneTasks: 1,
+//     pendingTasks: 1,
+//     totalHours: 8,
+//     avgHours: 4,
+//     efficiency: '50%'
+//   }
+// }
 
-for (const [name, data] of Object.entries(workerStats)) {
-  const avg = data.totalHours / data.taskCount;
-  const avgRounded = Math.round(avg * 100) / 100;
-  
-  console.log(`${name}: ${avgRounded} часов в среднем`);
-  
-  if (avg < minAvg) {
-    minAvg = avg;
-    mostEfficient = { name, avgHours: avgRounded };
-  }
-}
-
-console.log('Самый эффективный сотрудник:');
-console.log(mostEfficient); // { name: 'Борис', avgHours: 1.5 }
+const result8 = workers
+  .reduce((acc,worker)=>{
+    if (acc[worker.position] == undefined){
+      acc[worker.position] = {
+        employees: [worker.name],
+        tasks: worker.tasks
+      }
+    } else {
+      acc[worker.position].employees.push(worker.name)
+      acc[worker.position].tasks = [
+        ...acc[worker.position].tasks,
+        ...worker.tasks
+      ]
+      
+    }
+    return acc
+  },{})
+  console.log(result8)
