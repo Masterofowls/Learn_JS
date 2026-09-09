@@ -3,7 +3,7 @@ const User = {
     name: 'Alex'
 }
 
-Object.defineProperty(User, 'name', {writable: false, configurable: true})
+Object.defineProperty(User, 'name', {writable: false, /*configurable: true*/})
 console.log('1',Object.getOwnPropertyDescriptor(User, 'name'))
 
 // 1.2
