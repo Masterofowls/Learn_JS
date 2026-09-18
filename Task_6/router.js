@@ -5,17 +5,17 @@ import {
   getAllUsers,
   getUser,
   updateUser,
+  changeFavorite,
 } from "./controller.js";
 
 export const userRouter = express.Router();
 
-userRouter
-  .route("/")
+userRouter.route("/")
   .get(getAllUsers)
   .post(createUser);
 
-userRouter
-  .route("/:id")
+userRouter.route("/:id")
   .get(getUser)
-  .patch(updateUser)
-  .delete(deleteUser);
+  .put(updateUser)
+  .delete(deleteUser)
+  .patch(changeFavorite);
