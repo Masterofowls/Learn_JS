@@ -8,6 +8,7 @@ const server = express()
 server.use(cors())
 server.use(morgan('dev'))
 server.use(express.json())
+server.use(express.static('.'))
 
 server.use('/api/v1/users', userRouter)
 

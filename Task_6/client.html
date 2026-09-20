@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Users</title></head>
+<body>
+  <h1>Пользователи</h1>
+
+  <input id="search" placeholder="поиск..." />
+  <button onclick="load(1)">Найти</button>
+
+  <ul id="list"></ul>
+  <button onclick="load(page-1)">←</button>
+  <span id="info"></span>
+  <button onclick="load(page+1)">→</button>
+
+  <h3>Создать</h3>
+  <input id="userName" placeholder="имя" />
+  <input id="lastname" placeholder="фамилия" />
+  <input id="email" placeholder="email" />
+  <input id="age" type="number" placeholder="возраст" value="25" />
+  <button onclick="create()">Добавить</button>
+
+<script>
+const API = 'http://localhost:3050/api/v1/users';
+let page = 1;
+const limit = 5;
+
+async function load(p = 1) {
+  page = Math.max(1, p);
+  const q = document.getElementById('search').value;
+  const res = await fetch(`${API}?search=${encodeURIComponent(q)}&page=${page}&limit=${limit}`);
+  const json = await res.json();
+  const users = Array.isArray(json) ? json : json.data;
+
+  document.getElementById('list').innerHTML = users.map(u => `
+    <li>${u.name} ${u.lastname} (${u.email})
+      <button onclick="del('${u.id}')">x</button>
+      <button onclick="fav('${u.id}')">★ ${u.favorite ? 'on' : 'off'}</button>
+    </li>`).join('');
+  document.getElementById('info').textContent = Array.isArray(json) ? '' : `стр. ${json.page}/${json.totalPages}`;
+}
+
+async function create() {
+  await fetch(API, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+    name: document.getElementById('userName').value,
+    lastname: document.getElementById('lastname').value,
+    email: document.getElementById('email').value,
+    age: Number(document.getElementById('age').value)
+    })
+  });
+  load(page);
+}
+ц
+async function del(id) {
+  await fetch(`${API}/${id}`, { method: 'DELETE' });
+  load(page);
+}
+
+async function fav(id) {
+  await fetch(`${API}/${id}`, { method: 'PATCH' });
+  load(page);
+}
+
+load(1);
+</script>
+</body>
+</html>

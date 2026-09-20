@@ -14,8 +14,10 @@ userRouter.route("/")
   .get(getAllUsers)
   .post(createUser);
 
+userRouter.patch("/:id/favorite", changeFavorite);
+
 userRouter.route("/:id")
   .get(getUser)
   .put(updateUser)
-  .delete(deleteUser)
-  .patch(changeFavorite);
+  .patch(updateUser)
+  .delete(deleteUser);

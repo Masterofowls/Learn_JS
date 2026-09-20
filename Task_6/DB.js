@@ -44,6 +44,37 @@ if (countRows[0].c === 0) {
 }
 
 export const UsersDB = {
+  async getPage({ search = '', page = 1, limit = 5 }) {
+    const offset = (page - 1) * limit;
+  
+    const where = search
+      ? 'WHERE name ILIKE $1 OR lastname ILIKE $1 OR email ILIKE $1'
+      : '';
+    const params = search ? [`%${search}%`] : [];
+  
+    const { rows: countRows } = await pool.query(
+      `SELECT COUNT(*)::int AS total FROM users ${where}`,
+      params
+    );
+    const total = countRows[0].total;
+  
+    const { rows } = await pool.query(
+      `SELECT * FROM users
+       ${where}
+       ORDER BY id DESC
+       LIMIT $${params.length + 1} OFFSET $${params.length + 2}`,
+      [...params, limit, offset]
+    );
+  
+    return {
+      data: rows,
+      page,
+      limit,
+      total,
+      totalPages: Math.max(1, Math.ceil(total / limit)),
+    };
+  },
+  
   async getAll() {
     const { rows } = await pool.query('SELECT * FROM users ORDER BY id DESC');
     return rows;

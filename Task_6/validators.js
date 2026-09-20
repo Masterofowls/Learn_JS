@@ -15,14 +15,16 @@ export const userCreateScheme = yup.object().shape({
         .required(REQUIRED_ERROR_MESSAGE)
 })
 
-export const userDeleteScheme = yup.object().shape({
-  
-})
-
 export const userUpdateScheme = yup.object().shape({
-  
-})
+    name: yup.string().min(2).max(30),
+    lastname: yup.string().max(30),
+    email: yup.string().email('Не верно указан email'),
+    age: yup.number().integer().min(0).max(150),
+    favorite: yup.boolean(),
+    nickname: yup.string().max(30),
+    description: yup.string().max(500),
+    phone: yup.string().matches(/^\+?\d{7,15}$/, 'Неверный формат телефона'),
+    image_link: yup.string().url('Неверная ссылка').max(500),
+  }).noUnknown(true);
 
-export const changeFavoriteScheme = yup.object().shape({
-  
-})
+

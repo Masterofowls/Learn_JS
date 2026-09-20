@@ -1,13 +1,17 @@
 import { UsersDB as DB } from "./DB.js";
-import { userCreateScheme } from "./validators.js";
+import { userCreateScheme, userUpdateScheme } from "./validators.js";
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await DB.getAll();
-    return res.status(200).json(users);
+    const page   = Math.max(1, Number(req.query.page) || 1);
+    const limit  = Math.min(100, Math.max(1, Number(req.query.limit) || 5));
+    const search = String(req.query.search || '').trim();
+
+    const result = await DB.getPage({ search, page, limit });
+    return res.status(200).json(result);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -43,6 +47,11 @@ export const getUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  try {
+    await userUpdateScheme.validate(req.body, { abortEarly: false });
+  } catch (e) {
+    return res.status(400).json({ error: e.message });
+  }
   try {
     const updated = await DB.update(req.params.id, req.body);
     if (!updated) {
