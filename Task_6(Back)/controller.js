@@ -21,13 +21,18 @@ export const createUser = async (req, res) => {
 
     try {
       await userCreateScheme.validate(userData, { abortEarly: false });
-    } catch (e) {
-      return res.status(400).json({ error: e.message });
-    }
+      const newUser = await DB.create(userData);
+      return res.status(201).json(newUser);
+    }catch (e) {
+      console.log({e})
+      const preparedErrors = e.inner.reduce((acc, el) => {
+        acc[el.path] = el.errors.join(', ')
+        return acc
+      }, {})
+      return res.status(400).json(preparedErrors)
+      }
 
-    const newUser = await DB.create(userData);
-    return res.status(201).json(newUser);
-  } catch (error) {
+    } catch (error) {
     console.error(error);
     return res.status(500).json({ error: error.message });
   }

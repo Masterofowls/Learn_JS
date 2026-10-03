@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <span class="app-header__title">👥 USERS</span>
+    </header>
+
+    <section data-field="main" class="user-grid container-fluid px-4 py-3">
+    </section>
+
+    <footer class="app-footer">
+        <button data-action="add" class="btn btn-primary btn-add-user">
+            <span class="me-1">+</span> Add new user
+        </button>
+    </footer>
+
+    <div class="myModal myModaladd hidden" id="modalAdd">
+        <div class="myModal__container">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+            <form id="addUser">
+                <h4 class="mb-3 fw-semibold">➕ New user</h4>
+                <div class="mb-3">
+                    <label for="addUserName" class="form-label fw-medium">Name</label>
+                    <input type="text" name="name" class="form-control" id="addUserName" placeholder="First name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="addUserLastname" class="form-label fw-medium">Lastname</label>
+                    <input type="text" name="lastname" class="form-control" id="addUserLastname" placeholder="Last name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="addUserEmail" class="form-label fw-medium">Email</label>
+                    <input type="email" name="email" class="form-control" id="addUserEmail" placeholder="user@mail.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="addUserAge" class="form-label fw-medium">Age</label>
+                    <input type="number" name="age" class="form-control" id="addUserAge" placeholder="25">
+                </div>
+                <div class="mb-3">
+                    <label for="addUserPhone" class="form-label fw-medium">Phone</label>
+                    <input type="tel" name="phone" class="form-control" id="addUserPhone" placeholder="+79161234567">
+                </div>
+                <div class="mb-3">
+                    <label for="addUserDescription" class="form-label fw-medium">Description</label>
+                    <textarea name="description" class="form-control" id="addUserDescription" rows="2" placeholder="short bio..."></textarea>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="favorite" class="form-check-input" id="addUserFav">
+                    <label class="form-check-label" for="addUserFav">Favorite</label>
+                </div>
+                <div class="mb-3">
+                    <label for="addUserImg" class="form-label fw-medium">Picture link</label>
+                    <input type="url" name="image_link" class="form-control" id="addUserImg" placeholder="https://...">
+                </div>
+                <button type="submit" name="btn" class="btn btn-primary w-100 mt-2">Add user</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="myModal myModalview hidden" id="modalView">
+        <div class="myModal__container">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+            <div id="userDetails" class="user-details"></div>
+        </div>
+    </div>
+
+    <div class="myModal myModaledit hidden" id="modalEdit">
+        <div class="myModal__container">
+            <button type="button" class="btn-close" aria-label="Close"></button>
+            <form name="updateUser" id="editUserForm">
+                <h4 class="mb-3 fw-semibold">✏️ Edit user</h4>
+                <div class="mb-3">
+                    <label for="editUserName" class="form-label fw-medium">Name</label>
+                    <input type="text" name="name" class="form-control" id="editUserName">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserLastname" class="form-label fw-medium">Lastname</label>
+                    <input type="text" name="lastname" class="form-control" id="editUserLastname">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserEmail" class="form-label fw-medium">Email</label>
+                    <input type="email" name="email" class="form-control" id="editUserEmail">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserAge" class="form-label fw-medium">Age</label>
+                    <input type="number" name="age" class="form-control" id="editUserAge">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserPhone" class="form-label fw-medium">Phone</label>
+                    <input type="tel" name="phone" class="form-control" id="editUserPhone">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserNickname" class="form-label fw-medium">Nickname</label>
+                    <input type="text" name="nickname" class="form-control" id="editUserNickname">
+                </div>
+                <div class="mb-3">
+                    <label for="editUserDescription" class="form-label fw-medium">Description</label>
+                    <textarea name="description" class="form-control" id="editUserDescription" rows="2"></textarea>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" name="favorite" class="form-check-input" id="editUserFav">
+                    <label class="form-check-label" for="editUserFav">Favorite</label>
+                </div>
+                <div class="mb-3">
+                    <label for="editUserImg" class="form-label fw-medium">Picture link</label>
+                    <input type="url" name="image_link" class="form-control" id="editUserImg">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-2">Save changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="index.js"></script>
+</body>
+</html>

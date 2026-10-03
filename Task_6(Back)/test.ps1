@@ -6,4 +6,4 @@ $body = '{"name":"Alice","age":28,"favorite":true,"lastname":"Doe","nickname":"a
 Invoke-RestMethod -Uri "http://localhost:3050/api/v1/users" -Method Post -ContentType "application/json" -Body $body | ConvertTo-Json -Depth 5
 
 #3. psql
-#psql -U postgres -d learn_js -c "SELECT id, name, age, favorite FROM users;"
+#psql -U postgres -d learn_js -c "SELECT * FROM users;"
